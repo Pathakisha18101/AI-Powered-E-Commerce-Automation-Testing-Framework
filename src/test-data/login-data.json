@@ -1,0 +1,14 @@
+{
+  "validUsers": [
+    {
+      "email": "automation.sdet.demo+01@gmail.com",
+      "password": "Automation@123"
+    }
+  ],
+  "invalidUsers": [
+    {
+      "email": "invalid@example.com",
+      "password": "WrongPassword"
+    }
+  ]
+}

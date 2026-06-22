@@ -1,0 +1,8 @@
+{
+  "validProducts": [
+    "ZARA COAT 3"
+  ],
+  "invalidProducts": [
+    "INVALID_PRODUCT"
+  ]
+}

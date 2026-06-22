@@ -1,0 +1,16 @@
+{
+  "name": "ai-powered-e-commerce-testing-framework",
+  "version": "1.0.0",
+  "scripts": {
+    "test:bdd": "cucumber-js --require-module ts-node/register --require bdd/steps/*.ts --require bdd/hooks/*.ts"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.0.0",
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^26.0.0",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}
