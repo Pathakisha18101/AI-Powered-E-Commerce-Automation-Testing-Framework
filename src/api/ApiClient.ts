@@ -13,7 +13,7 @@ export class ApiClient {
             await request.newContext({
 
                 baseURL:
-                    process.env.API_BASE_URL,
+                    process.env.BASE_URL,
 
                 extraHTTPHeaders: {
                     "Content-Type":
