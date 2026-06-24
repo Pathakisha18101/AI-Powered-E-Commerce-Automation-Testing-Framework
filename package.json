@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
   "test": "npm run test:bdd",
-  "test:bdd": "cucumber-js --require-module ts-node/register --require bdd/steps/*.ts --require bdd/hooks/*.ts"
-},
+    "test:bdd": "cucumber-js bdd/features/**/*.feature --require-module ts-node/register --require bdd/steps/**/*.ts --require bdd/hooks/**/*.ts"
+  },
   "devDependencies": {
     "@cucumber/cucumber": "^13.0.0",
     "@playwright/test": "^1.61.0",
