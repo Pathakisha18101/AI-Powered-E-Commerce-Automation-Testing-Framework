@@ -2,13 +2,17 @@
   "name": "ai-powered-e-commerce-testing-framework",
   "version": "1.0.0",
   "scripts": {
-  "test": "npm run test:bdd",
-    "test:bdd": "cucumber-js bdd/features/**/*.feature --require-module ts-node/register --require bdd/steps/**/*.ts --require bdd/hooks/**/*.ts"
+    "test": "npm run test:bdd",
+    "test:bdd": "cucumber-js bdd/features/**/*.feature --require-module ts-node/register --require bdd/steps/**/*.ts --require bdd/hooks/**/*.ts --format allure-cucumberjs/reporter",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^13.0.0",
     "@playwright/test": "^1.61.0",
     "@types/node": "^26.0.0",
+    "allure-commandline": "^2.34.1",
+    "allure-cucumberjs": "^3.4.1",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
