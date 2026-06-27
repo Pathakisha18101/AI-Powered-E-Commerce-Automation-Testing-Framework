@@ -1,14 +1,8 @@
 module.exports = {
-
     default: {
-
-        paths: [
-            "bdd/features/**/*.feature"
-        ],
-
         require: [
-            "bdd/steps/**/*.ts",
-            "bdd/hooks/**/*.ts"
+            "src/steps/**/*.ts",
+            "src/hooks/**/*.ts"
         ],
 
         requireModule: [
@@ -16,11 +10,17 @@ module.exports = {
         ],
 
         format: [
-            "progress"
+            "progress",
+
+            "allure-cucumberjs/reporter"
         ],
 
-        publishQuiet: true
+        formatOptions: {
+            resultsDir: "allure-results"
+        },
 
+        publishQuiet: true,
+
+        timeout: 60000
     }
-
 };

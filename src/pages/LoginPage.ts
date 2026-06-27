@@ -1,100 +1,271 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { config } from '../config';
+import { logger } from '../utils/logger2';
+
+
 
 export class LoginPage extends BasePage {
+
 
     readonly emailInput: Locator;
     readonly passwordInput: Locator;
     readonly loginButton: Locator;
 
+
+
     constructor(page: Page) {
+
         super(page);
 
-        this.emailInput = this.page.locator('#userEmail');
-        this.passwordInput = this.page.locator('#userPassword');
-        this.loginButton = this.page.locator('[value="Login"]');
+
+        this.emailInput =
+            this.page.locator('#userEmail');
+
+
+        this.passwordInput =
+            this.page.locator('#userPassword');
+
+
+        this.loginButton =
+            this.page.locator('[value="Login"]');
+
     }
+
+
+
+
 
     async navigate() {
 
-        console.log("===================================");
-        console.log("Opening Login Page...");
-        console.log("UI URL =", process.env.UI_BASE_URL);
 
-        await this.page.goto(process.env.UI_BASE_URL!);
+        logger.info(
+            "Opening Login Page"
+        );
 
-        console.log("Current URL:", this.page.url());
-        console.log("===================================");
+
+        logger.info(
+            `UI URL: ${config.uiBaseUrl}`
+        );
+
+
+
+        await this.page.goto(
+            config.uiBaseUrl
+        );
+
+
+
+        logger.info(
+            `Current URL: ${this.page.url()}`
+        );
+
+
     }
 
-    async login(email: string, password: string): Promise<void> {
 
-        console.log("Waiting for Email Field...");
+
+
+
+
+    async login(
+        email:string,
+        password:string
+    ):Promise<void>{
+
+
+
+        logger.info(
+            "Waiting for Email Field"
+        );
+
+
 
         await this.emailInput.waitFor({
-            state: "visible",
-            timeout: 30000
+
+            state:"visible",
+
+            timeout:30000
+
         });
 
-        console.log("===================================");
-        console.log("EMAIL RECEIVED:");
-        console.log(email);
 
-        console.log("EMAIL LENGTH:");
-        console.log(email.length);
 
-        console.log("PASSWORD LENGTH:");
-        console.log(password.length);
-        console.log("===================================");
 
-        await this.emailInput.fill(email);
+        logger.info(
+            `Email received: ${email}`
+        );
 
-        const enteredEmail = await this.emailInput.inputValue();
 
-        console.log("EMAIL INSIDE INPUT:");
-        console.log(enteredEmail);
+        logger.info(
+            `Email length: ${email.length}`
+        );
 
-        await this.passwordInput.fill(password);
 
-        console.log("Clicking Login Button...");
+        logger.info(
+            `Password length: ${password.length}`
+        );
+
+
+
+
+
+        await this.emailInput.fill(
+            email
+        );
+
+
+
+        const enteredEmail =
+            await this.emailInput.inputValue();
+
+
+
+        logger.info(
+            `Email inside input: ${enteredEmail}`
+        );
+
+
+
+
+        await this.passwordInput.fill(
+            password
+        );
+
+
+
+        logger.info(
+            "Clicking Login Button"
+        );
+
+
 
         await this.loginButton.click();
 
-        await this.page.waitForTimeout(5000);
 
-        console.log("===================================");
-        console.log("Current URL:", this.page.url());
-        console.log("Current Title:", await this.page.title());
 
-        const error = this.page.locator(".toast-error");
 
-        if (await error.isVisible().catch(() => false)) {
-            console.log("LOGIN ERROR:");
-            console.log(await error.textContent());
+        await this.page.waitForTimeout(
+            5000
+        );
+
+
+
+
+        logger.info(
+            `Current URL after login: ${this.page.url()}`
+        );
+
+
+
+        logger.info(
+            `Page Title: ${await this.page.title()}`
+        );
+
+
+
+
+
+        const error =
+            this.page.locator(
+                ".toast-error"
+            );
+
+
+
+
+        if(
+            await error.isVisible()
+            .catch(()=>false)
+        ){
+
+
+            const errorMessage =
+                await error.textContent();
+
+
+
+            logger.error(
+                `LOGIN ERROR: ${errorMessage}`
+            );
+
+
         }
 
-        console.log("===================================");
 
-        await this.page.waitForURL("**/dashboard/**", {
-            timeout: 30000
-        });
 
-        console.log("Dashboard Loaded Successfully");
+
+
+        await this.page.waitForURL(
+
+            "**/dashboard/**",
+
+            {
+
+                timeout:30000
+
+            }
+
+        );
+
+
+
+        logger.info(
+            "Dashboard Loaded Successfully"
+        );
+
     }
 
-    async setToken(token: string) {
 
-        await this.page.evaluate((token) => {
 
-            localStorage.setItem("token", token);
 
-        }, token);
+
+
+    async setToken(
+        token:string
+    ){
+
+
+        await this.page.evaluate(
+
+            (token)=>{
+
+
+                localStorage.setItem(
+                    "token",
+                    token
+                );
+
+
+            },
+
+            token
+
+        );
+
+
+        logger.info(
+            "Token stored in local storage"
+        );
 
     }
 
-    async reload() {
+
+
+
+
+    async reload(){
+
+
+        logger.info(
+            "Reloading Page"
+        );
+
 
         await this.page.reload();
 
+
     }
+
+
 }

@@ -1,19 +1,18 @@
 node_modules/
 
 playwright-report/
-
+allure-report/
 allure-results/
 
-allure-report/
+reports/
+logs/
 
-test-results/
-
-dist/
-
-coverage/
+generated-tests/
 
 .env
+.env.qa
+.env.prod
 
-.DS_Store
-
-.vscode/
+test-results/
+dist/
+coverage/

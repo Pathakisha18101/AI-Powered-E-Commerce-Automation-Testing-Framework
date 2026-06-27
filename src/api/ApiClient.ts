@@ -1,33 +1,86 @@
-import { APIRequestContext, request } from "@playwright/test";
-import dotenv from "dotenv";
+import {
+    APIRequestContext,
+    request
+} from "@playwright/test";
 
-dotenv.config();
+
+import { config } from "../config";
+
+import { logger } from "../utils/logger2";
+
+
+
 
 export class ApiClient {
 
+
+
     private apiContext!: APIRequestContext;
 
-    async initialize() {
+
+
+
+
+    async initialize(){
+
+
+
+        logger.info(
+            "Initializing API Context"
+        );
+
+
+
 
         this.apiContext =
             await request.newContext({
 
                 baseURL:
-                    process.env.BASE_URL,
+                    config.baseUrl,
 
-                extraHTTPHeaders: {
+
+
+                extraHTTPHeaders:{
+
                     "Content-Type":
                         "application/json"
+
                 }
+
 
             });
 
+
+
+
+        logger.info(
+            `API Base URL: ${config.baseUrl}`
+        );
+
+
+
+        logger.info(
+            "API Context Initialized Successfully"
+        );
+
+
     }
 
-    getContext(): APIRequestContext {
+
+
+
+
+
+    getContext()
+    :APIRequestContext {
+
+
 
         return this.apiContext;
 
+
     }
+
+
 
 }
