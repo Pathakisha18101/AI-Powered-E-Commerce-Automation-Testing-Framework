@@ -13,7 +13,7 @@ let browser: Browser;
 
 Before(async () => {
     browser = await chromium.launch({
-        headless: true
+        headless: false
     });
 
     const page = await browser.newPage();
