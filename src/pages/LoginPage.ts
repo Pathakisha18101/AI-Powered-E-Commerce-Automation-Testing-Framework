@@ -30,10 +30,22 @@ export class LoginPage extends BasePage {
 }
 
   async login(email: string, password: string): Promise<void> {
+
+    await this.emailInput.waitFor({
+        state: "visible",
+        timeout: 30000
+    });
+
     await this.emailInput.fill(email);
+
     await this.passwordInput.fill(password);
+
     await this.loginButton.click();
-  }
+
+    await this.page.waitForURL("**/dashboard/**", {
+        timeout: 30000
+    });
+}
   async setToken(token:string){
 
 

@@ -57,15 +57,27 @@ async login(
     password: string
 ) {
 
+    console.log("========== UI LOGIN START ==========");
+
+    console.log("Opening Login Page...");
+
     await this.loginPage.navigate();
+
+    console.log("Current URL:", await this.loginPage.getCurrentUrl());
+
+    console.log("Entering Credentials...");
 
     await this.loginPage.login(
         username,
         password
     );
 
+    console.log("Checking Dashboard...");
+
     const dashboardLoaded =
         await this.dashboardPage.isDashboardLoaded();
+
+    console.log("Dashboard Loaded =", dashboardLoaded);
 
     if (!dashboardLoaded) {
 
@@ -75,6 +87,7 @@ async login(
 
     }
 
+    console.log("========== UI LOGIN SUCCESS ==========");
 }
 
 async searchAndAddProduct(

@@ -13,8 +13,8 @@ let browser: Browser;
 
 Before(async () => {
     browser = await chromium.launch({
-        headless: false
-    });
+    headless: !!process.env.JENKINS_HOME
+});
 
     const page = await browser.newPage();
 
@@ -31,26 +31,36 @@ After(async function ({ result }) {
         const screenshotDir = "screenshots";
 
         if (!fs.existsSync(screenshotDir)) {
-            fs.mkdirSync(screenshotDir, { recursive: true });
+            fs.mkdirSync(screenshotDir, {
+                recursive: true
+            });
         }
 
-        const fileName =
-            `${Date.now()}-failure.png`;
-
         const screenshotPath =
-            path.join(screenshotDir, fileName);
+            path.join(
+                screenshotDir,
+                `${Date.now()}-failure.png`
+            );
 
         await context.page.screenshot({
             path: screenshotPath,
             fullPage: true
         });
 
-        console.log(
-            `Screenshot Saved: ${screenshotPath}`
-        );
+        console.log("===================================");
+
+        console.log("Screenshot Saved:", screenshotPath);
+
+        console.log("Current URL:", context.page.url());
+
+        console.log("Current Title:", await context.page.title());
+
+        console.log("===================================");
+
     }
 
     if (browser) {
         await browser.close();
     }
+
 });

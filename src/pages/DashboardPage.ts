@@ -19,10 +19,13 @@ export class DashboardPage extends BasePage {
 
   async isDashboardLoaded(): Promise<boolean> {
 
-    await this.page.waitForLoadState('networkidle');
+    await this.dashboardProducts.first().waitFor({
+        state: "visible",
+        timeout: 30000
+    });
 
-    return await this.dashboardProducts.first().isVisible();
-  }
+    return true;
+}
 
   async getProductCount(): Promise<number> {
 
