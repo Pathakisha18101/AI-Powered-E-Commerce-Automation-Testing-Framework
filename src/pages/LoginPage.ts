@@ -31,20 +31,50 @@ export class LoginPage extends BasePage {
 
   async login(email: string, password: string): Promise<void> {
 
+    console.log("Waiting for Email Field...");
+
     await this.emailInput.waitFor({
         state: "visible",
         timeout: 30000
     });
 
+    console.log("Entering Email...");
+
     await this.emailInput.fill(email);
+
+    console.log("Entering Password...");
 
     await this.passwordInput.fill(password);
 
+    console.log("Clicking Login Button...");
+
     await this.loginButton.click();
+
+    console.log("Waiting 5 seconds...");
+
+    await this.page.waitForTimeout(5000);
+
+    console.log("Current URL:", this.page.url());
+
+    console.log("Current Title:", await this.page.title());
+
+    const error =
+        this.page.locator(".toast-error");
+
+    if (await error.isVisible().catch(() => false)) {
+
+        console.log(
+            "LOGIN ERROR:",
+            await error.textContent()
+        );
+
+    }
 
     await this.page.waitForURL("**/dashboard/**", {
         timeout: 30000
     });
+
+    console.log("Dashboard Loaded");
 }
   async setToken(token:string){
 

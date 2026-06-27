@@ -13,7 +13,7 @@ let browser: Browser;
 
 Before(async () => {
     browser = await chromium.launch({
-    headless: !!process.env.JENKINS_HOME
+    headless: false
 });
 
     const page = await browser.newPage();
