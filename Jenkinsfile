@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs "NodeJS-24"
+        nodejs "NodeJS-26"
     }
 
     environment {
@@ -21,19 +21,26 @@ pipeline {
             }
         }
 
+        stage('Node Version') {
+            steps {
+                bat 'node -v'
+                bat 'npm -v'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 bat 'npm ci'
             }
         }
 
-        stage('Install Browsers') {
+        stage('Install Playwright Browsers') {
             steps {
                 bat 'npx playwright install'
             }
         }
 
-        stage('Run Tests') {
+        stage('Run BDD Tests') {
             steps {
                 bat 'npm test'
             }
@@ -41,10 +48,9 @@ pipeline {
 
         stage('Generate Allure Report') {
             steps {
-                bat 'allure generate allure-results --clean -o allure-report'
+                bat 'npx allure generate allure-results --clean -o allure-report'
             }
         }
-
     }
 
     post {
@@ -52,22 +58,19 @@ pipeline {
         always {
 
             archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
-
             archiveArtifacts artifacts: 'screenshots/**', allowEmptyArchive: true
-
             archiveArtifacts artifacts: 'videos/**', allowEmptyArchive: true
-
             archiveArtifacts artifacts: 'traces/**', allowEmptyArchive: true
+
+            echo 'Artifacts Archived'
         }
 
         success {
-            echo 'Pipeline Passed'
+            echo 'Pipeline Passed Successfully'
         }
 
         failure {
             echo 'Pipeline Failed'
         }
-
     }
-
 }
