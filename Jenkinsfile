@@ -7,10 +7,10 @@ pipeline {
     }
 
     environment {
-        BASE_URL = credentials('BASE_URL')
-        UI_BASE_URL = credentials('UI_BASE_URL')
-        USER_EMAIL = credentials('USER_EMAIL')
-        USER_PASSWORD = credentials('USER_PASSWORD')
+        BASE_URL = https://rahulshettyacademy.com/client
+        UI_BASE_URL = https://rahulshettyacademy.com/client
+        USER_EMAIL = automation.sdet.demo+01@gmail.com
+        USER_PASSWORD = JaiMatadi1810@
     }
 
     stages {

@@ -3,114 +3,98 @@ import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
 
-  
-  readonly emailInput: Locator;
-  readonly passwordInput: Locator;
-  readonly loginButton: Locator;
+    readonly emailInput: Locator;
+    readonly passwordInput: Locator;
+    readonly loginButton: Locator;
 
-  constructor(page: Page) {
-  super(page);
+    constructor(page: Page) {
+        super(page);
 
-  this.emailInput = this.page.locator('#userEmail');
-  this.passwordInput = this.page.locator('#userPassword');
-  this.loginButton = this.page.locator('[value="Login"]');
-}
+        this.emailInput = this.page.locator('#userEmail');
+        this.passwordInput = this.page.locator('#userPassword');
+        this.loginButton = this.page.locator('[value="Login"]');
+    }
 
-  async navigate() {
+    async navigate() {
 
-    console.log(
-        "UI URL =",
-        process.env.UI_BASE_URL
-    );
+        console.log("===================================");
+        console.log("Opening Login Page...");
+        console.log("UI URL =", process.env.UI_BASE_URL);
 
-    await this.page.goto(
-        process.env.UI_BASE_URL!
-    );
+        await this.page.goto(process.env.UI_BASE_URL!);
 
-}
+        console.log("Current URL:", this.page.url());
+        console.log("===================================");
+    }
 
-  async login(email: string, password: string): Promise<void> {
+    async login(email: string, password: string): Promise<void> {
 
-    console.log("Waiting for Email Field...");
+        console.log("Waiting for Email Field...");
 
-    await this.emailInput.waitFor({
-        state: "visible",
-        timeout: 30000
-    });
+        await this.emailInput.waitFor({
+            state: "visible",
+            timeout: 30000
+        });
 
-    console.log("Entering Email...");
+        console.log("===================================");
+        console.log("EMAIL RECEIVED:");
+        console.log(email);
 
-    await this.emailInput.fill(email);
+        console.log("EMAIL LENGTH:");
+        console.log(email.length);
 
-    console.log("Entering Password...");
+        console.log("PASSWORD LENGTH:");
+        console.log(password.length);
+        console.log("===================================");
 
-    await this.passwordInput.fill(password);
+        await this.emailInput.fill(email);
 
-    console.log("Clicking Login Button...");
+        const enteredEmail = await this.emailInput.inputValue();
 
-    await this.loginButton.click();
+        console.log("EMAIL INSIDE INPUT:");
+        console.log(enteredEmail);
 
-    console.log("Waiting 5 seconds...");
+        await this.passwordInput.fill(password);
 
-    await this.page.waitForTimeout(5000);
+        console.log("Clicking Login Button...");
 
-    console.log("Current URL:", this.page.url());
+        await this.loginButton.click();
 
-    console.log("Current Title:", await this.page.title());
+        await this.page.waitForTimeout(5000);
 
-    const error =
-        this.page.locator(".toast-error");
+        console.log("===================================");
+        console.log("Current URL:", this.page.url());
+        console.log("Current Title:", await this.page.title());
 
-    if (await error.isVisible().catch(() => false)) {
+        const error = this.page.locator(".toast-error");
 
-        console.log(
-            "LOGIN ERROR:",
-            await error.textContent()
-        );
+        if (await error.isVisible().catch(() => false)) {
+            console.log("LOGIN ERROR:");
+            console.log(await error.textContent());
+        }
+
+        console.log("===================================");
+
+        await this.page.waitForURL("**/dashboard/**", {
+            timeout: 30000
+        });
+
+        console.log("Dashboard Loaded Successfully");
+    }
+
+    async setToken(token: string) {
+
+        await this.page.evaluate((token) => {
+
+            localStorage.setItem("token", token);
+
+        }, token);
 
     }
 
-    await this.page.waitForURL("**/dashboard/**", {
-        timeout: 30000
-    });
+    async reload() {
 
-    console.log("Dashboard Loaded");
-}
-  async setToken(token:string){
+        await this.page.reload();
 
-
-    await this.page.evaluate(
-
-        (token)=>{
-
-
-            localStorage.setItem(
-
-                "token",
-
-                token
-
-            );
-
-
-        },
-
-
-        token
-
-
-    );
-
-
-}
-
-
-
-async reload(){
-
-
-    await this.page.reload();
-
-
-}
+    }
 }
